@@ -2,6 +2,7 @@
 
 namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
+use Contao\System;
 use Isotope\CheckoutStep\ShippingAddress as IsotopeShippingAddress;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
@@ -28,6 +29,7 @@ class ShippingAddress extends IsotopeShippingAddress implements IsotopeCheckoutS
   public function __construct(Checkout $objModule) {
     parent::__construct($objModule);
     $this->dhlParcelShopShipping = new DHLParcelShop();
+    $this->Template->pro6pp_apikey = System::getContainer()->getParameter('jvh.isotope-checkout-bundle.pro6pp_apikey');
   }
 
   /**
