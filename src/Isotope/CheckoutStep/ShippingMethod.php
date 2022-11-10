@@ -126,6 +126,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
                 $objShippingDateWidget->validate();
                 if (!$objShippingDateWidget->hasErrors()) {
                   $scheduledShippingDate = new \DateTime($objShippingDateWidget->value);
+                  $scheduledShippingDate->setTime(23, 59);
                   if (!Validator::isDate($objShippingDateWidget->value)) {
                     $objShippingDateWidget->addError(sprintf($GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_error'], $earliestShippingDate));
                   } elseif ($scheduledShippingDate->getTimestamp() < $earliestShippingDateTimeStamp) {
