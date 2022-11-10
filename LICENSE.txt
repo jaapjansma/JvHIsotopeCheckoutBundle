@@ -1,4 +1,4 @@
-Package: krabo/isotope-stock-bundle
+Package: jvh/isotope-checkout-bundle
 Copyright (C) 2021, Jaap Jansma <jaap.jansma@civicoop.org>
 Licensed under the GNU Affero Public License 3.0 (below).
 
