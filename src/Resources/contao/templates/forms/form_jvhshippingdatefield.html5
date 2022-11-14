@@ -13,11 +13,12 @@
 <?php $this->endblock(); ?>
 
 <?php $this->block('field'); ?>
-  <?php if ($this->hasErrors()): ?>
-    <br /><span class="error"><?= $this->getErrorAsString() ?></span>
-  <?php endif; ?>
+  <br /><?= $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_description']; ?>
 
   <input type="<?= $this->type ?>" name="<?= $this->name ?>" id="ctrl_<?= $this->id ?>" class="text<?php if ($this->hideInput): ?> password<?php endif; ?><?php if ($this->class): ?> <?= $this->class ?><?php endif; ?>" value="<?= Contao\StringUtil::specialchars($this->value) ?>"<?= $this->getAttributes() ?>>
+  <?php if ($this->hasErrors()): ?>
+      <br /><span class="error"><?= $this->getErrorAsString() ?></span>
+    <?php endif; ?>
   <span class="note"><?= $this->description ?></span>
 <?php $this->endblock(); ?>
 

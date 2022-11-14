@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date'] = ['Geplande verzend datum', 'Verwachte verzenddatum. U kunt deze aanpassen naar een later moment. Gebruik dd-mm-jjjj'];
+$GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date'] = ['Geplande verzend datum', 'U kunt deze aanpassen naar een later moment. Gebruik dd-mm-jjjj'];
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_error'] = 'Ongelgde geplande verzenddatum. Gebruik dd-mm-jjjj als formaat en niet eerder dan %s';
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_checkout_review_note'] = 'Geplande verzenddatum: %s';
+$GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_description'] = 'Wij verwachten uw bestelling op onderstaande datum te versturen. U kunt de datum zelf aanpassen, zodat u kunt bepalen wanneer uw bestelling wordt verzonden';
+$GLOBALS['TL_LANG']['MSC']['invalid_postalcode'] = "Postcode is volgens ons ongeldig. Controleer nogmaals de postcode en wanneer deze toch correct is, voer de straat en woonplaats in.";

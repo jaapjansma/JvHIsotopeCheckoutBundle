@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date'] = ['Scheduled Shipping Date', 'Earliest expected shipping date. You can change this to a later moment. Format dd-mm-yyyy'];
+$GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date'] = ['Scheduled Shipping Date', 'You can change this to a later moment. Format dd-mm-yyyy'];
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_error'] = 'Invalid shipping date. Please enter in the format dd-mm-yyyy and it should be after %s';
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_checkout_review_note'] = 'Scheduled shipping date: %s';
+$GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_description'] = 'We expect to ship on the date below. You can change this date if you wish.';
+$GLOBALS['TL_LANG']['MSC']['invalid_postalcode'] = "Postal code invalid. Check again the postal code and when correct, please, enter the street and the city.";
