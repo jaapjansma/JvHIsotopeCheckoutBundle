@@ -262,7 +262,9 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     $arrIds = deserialize($this->objModule->iso_shipping_modules);
 
     if (!empty($arrIds) && \is_array($arrIds)) {
-      $arrIds = array_merge($arrIds, $allowedShippingMethods);
+      if (is_array($allowedShippingMethods)) {
+        $arrIds = array_merge($arrIds, $allowedShippingMethods);
+      }
       $arrIds = array_filter($arrIds, function ($id) use ($allowedShippingMethods) {
         if (is_array($allowedShippingMethods) && !in_array($id, $allowedShippingMethods)) {
           return FALSE;
