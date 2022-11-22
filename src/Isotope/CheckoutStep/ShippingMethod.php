@@ -324,7 +324,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
             $defaultShippingDate = $earliestShippingDate;
             if (Isotope::getCart()->combined_packaging_slip_id) {
               $packagingSlip = IsotopePackagingSlipModel::findOneBy('document_number', Isotope::getCart()->combined_packaging_slip_id);
-              $defaultShippingDate = $packagingSlip->scheduled_shipping_date;
+              $defaultShippingDate = date('d-m-Y', $packagingSlip->scheduled_shipping_date);
             }
             $strLabel .= '<span class="scheduled_shipping_date_able" data-earliest-shipping-date="' . $defaultShippingDate . '">&nbsp;</span>';
           }
