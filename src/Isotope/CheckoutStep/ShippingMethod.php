@@ -58,9 +58,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     elseif (!empty($combined_order_id)) {
       $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
     }
-    if (Isotope::getCart()->getShippingMethod() && Isotope::getCart()->getShippingMethod()->type == 'pickup_shop') {
-      $shippingMethodAllowsShippingDateChange[] = Isotope::getCart()->getShippingMethod()->id;
-    }
 
     if (empty($this->modules)) {
       $this->blnError = TRUE;
@@ -246,10 +243,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     elseif (!empty($combined_order_id)) {
       $allowedShippingMethods[] = $combineShippingMethod->id;
       $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
-    }
-    if (Isotope::getCart()->getShippingMethod() && Isotope::getCart()->getShippingMethod()->type == 'pickup_shop') {
-      $allowedShippingMethods[] = Isotope::getCart()->getShippingMethod()->id;
-      $shippingMethodAllowsShippingDateChange[] = Isotope::getCart()->getShippingMethod()->id;
     }
 
     if (NULL !== $this->modules && NULL !== $this->options) {
