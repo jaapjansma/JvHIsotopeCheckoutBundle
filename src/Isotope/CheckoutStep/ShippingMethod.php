@@ -44,14 +44,13 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     $shippingMethodAllowsShippingDateChange = [];
     $combineShippingMethod = Shipping::findOneBy('type', 'combine_packaging_slip');
     $combined_order_id = Isotope::getCart()->combined_order_id;
-    $shippingAddress = Isotope::getCart()->getShippingAddress();
+    /*$shippingAddress = Isotope::getCart()->getShippingAddress();
     if (!empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id)) {
       $dhlPickupPointShippingMethod = Shipping::findOneById(static::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
       if ($dhlPickupPointShippingMethod) {
-        $shippingMethodAllowsShippingDateChange[] = $dhlPickupPointShippingMethod->id;
         Isotope::getCart()->setShippingMethod($dhlPickupPointShippingMethod);
       }
-    }
+    }*/
     if ($combineShippingMethod->skipShippingMethodSelection()) {
       $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
     }
@@ -232,8 +231,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
       $dhlPickupPointShippingMethod = Shipping::findOneById(static::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
       if ($dhlPickupPointShippingMethod) {
         $allowedShippingMethods[] = $dhlPickupPointShippingMethod->id;
-        $shippingMethodAllowsShippingDateChange[] = $dhlPickupPointShippingMethod->id;
-        Isotope::getCart()->setShippingMethod($dhlPickupPointShippingMethod);
       }
     }
     if ($combineShippingMethod->skipShippingMethodSelection()) {
@@ -243,6 +240,9 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     elseif (!empty($combined_order_id)) {
       $allowedShippingMethods[] = $combineShippingMethod->id;
       $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
+    }
+    if (Isotope::getCart()->getShippingMethod() && Isotope::getCart()->getShippingMethod()->type == 'pickup_shop') {
+      $allowedShippingMethods[] = Isotope::getCart()->getShippingMethod()->id;
     }
 
     if (NULL !== $this->modules && NULL !== $this->options) {
