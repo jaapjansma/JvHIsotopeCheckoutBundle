@@ -19,6 +19,7 @@
 use JvH\IsotopeCheckoutBundle\EventListener\ProductionCollectionListener;
 
 $GLOBALS['ISO_HOOKS']['updateDraftOrder'][] = [ProductionCollectionListener::class, 'updateDraftOrder'];
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [ProductionCollectionListener::class, 'findSurchargesForCollection'];
 
 unset($GLOBALS['ISO_CHECKOUTSTEP']['address']);
 $jvhCheckoutSteps['billing_address'] = ['JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\BillingAddress'];

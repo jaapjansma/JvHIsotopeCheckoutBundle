@@ -18,7 +18,11 @@
 
 namespace JvH\IsotopeCheckoutBundle\EventListener;
 
+use Isotope\Interfaces\IsotopeOrderableCollection;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollectionSurcharge;
 
 class ProductionCollectionListener {
 
@@ -33,6 +37,26 @@ class ProductionCollectionListener {
    */
   public function updateDraftOrder(ProductCollection $objCollection, ProductCollection $objSource, $arrItemIds) {
     $objCollection->scheduled_shipping_date = $objSource->scheduled_shipping_date;
+  }
+
+  /**
+   * Get shipping and payment surcharges for given collection
+   *
+   * @param IsotopeProductCollection $objCollection
+   *
+   * @return ProductCollectionSurcharge[]
+   */
+  public function findSurchargesForCollection(IsotopeProductCollection $objCollection)
+  {
+    if ($objCollection instanceof Cart) {
+      $arrSurcharges = array();
+
+      if (($objSurcharge = $objCollection->getShippingSurcharge()) !== null) {
+        $arrSurcharges[] = $objSurcharge;
+      }
+      return $arrSurcharges;
+    }
+    return array();
   }
 
 }
