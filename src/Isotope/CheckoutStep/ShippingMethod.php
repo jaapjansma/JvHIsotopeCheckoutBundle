@@ -88,9 +88,19 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     );
 
     $earliestShippingDateStringValue = '';
-    if (Isotope::getCart()->scheduled_shipping_date) {
+    $objShipper = null;
+    if (Isotope::getCart()->shipping_id) {
+      if ($this->modules[Isotope::getCart()->shipping_id]->shipper_id) {
+        $objShipper = IsotopePackagingSlipShipperModel::findByPk($this->modules[Isotope::getCart()->shipping_id]->shipper_id);
+      }
+    }
+    $earliestShippingDateTimeStamp = IsotopeHelper::getScheduledShippingDate(Isotope::getCart(), $objShipper);
+    if (empty(Isotope::getCart()->scheduled_shipping_date) || date('Ymd', Isotope::getCart()->scheduled_shipping_date) < date('Ymd', $earliestShippingDateTimeStamp)) {
+      $earliestShippingDateStringValue = date('d-m-Y', $earliestShippingDateTimeStamp);
+    } elseif (Isotope::getCart()->scheduled_shipping_date) {
       $earliestShippingDateStringValue = date('d-m-Y', Isotope::getCart()->scheduled_shipping_date);
     }
+
     $objShippingDateWidget = new $GLOBALS['TL_FFL']['text'](
       [
         'id' => $this->getStepClass() . '_shipping_date',
@@ -308,11 +318,14 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
             $allowShippingDateChange = TRUE;
           }
           if ($allowShippingDateChange) {
-            $earliestShippingDate = date('d-m-Y', IsotopeHelper::getScheduledShippingDate(Isotope::getCart(), $objShipper));
+            $earliestShippingDateTimestamp = IsotopeHelper::getScheduledShippingDate(Isotope::getCart(), $objShipper);
+            $earliestShippingDate = date('d-m-Y', $earliestShippingDateTimestamp);
             $defaultShippingDate = $earliestShippingDate;
             if (Isotope::getCart()->combined_packaging_slip_id) {
               $packagingSlip = IsotopePackagingSlipModel::findOneBy('document_number', Isotope::getCart()->combined_packaging_slip_id);
-              $defaultShippingDate = date('d-m-Y', $packagingSlip->scheduled_shipping_date);
+              if (date('Ymd', $earliestShippingDateTimestamp) < date('Ymd', $packagingSlip->scheduled_shipping_date)) {
+                $defaultShippingDate = date('d-m-Y', $packagingSlip->scheduled_shipping_date);
+              }
             }
             $strLabel .= '<span class="scheduled_shipping_date_able" data-earliest-shipping-date="' . $defaultShippingDate . '">&nbsp;</span>';
           }
