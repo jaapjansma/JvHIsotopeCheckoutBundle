@@ -1,0 +1,28 @@
+<h3><?= $this->headline ?></h3>
+<div class="info"><?= $this->message ?></div>
+
+<?= $this->options ?>
+
+<?php if ($this->fields): ?>
+<div id="<?= $this->class ?>_new" class="address_new"<?php if($this->style): ?> style="<?= $this->style ?>"<?php endif; ?>>
+<?php if($this->tableless): ?>
+<?= $this->fields ?>
+<?php else: ?>
+<table>
+<?= $this->fields ?>
+</table>
+<?php endif; ?>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+(function($) {
+  $('input[name=shipping]').on('change', function() {
+    var shippingModule = $('input[name="shipping"]:checked').val();
+    if (shippingModule == 'ship') {
+      $('input[name="<?= $this->class; ?>"]:checked').click();
+    }
+  });
+  $('input[name=shipping]').trigger('change');
+})(jQuery);
+</script>

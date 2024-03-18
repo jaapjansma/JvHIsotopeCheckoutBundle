@@ -16,6 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['combine'] = ['Combine with another order'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['Send my order'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'] = ['I collect my order at the shop or another JvH pickup location'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'] = ['Send my order to my home address'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'] = ['Send my order to a DHL Pickup Point'];
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'] = 'Shipping';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_message'] = 'I want to shipping my order to';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to'] = 'Shipping destination';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to_message'] = 'To where do you want to ship your order?';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup'] = 'DHL Pickup Point';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_message'] = 'Select a DHL Pickup Point. Only available in the Netherlands';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shop'] = 'Pickup or shop';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shop_message'] = 'Select the pickup point or Jan van Haasteren Shop';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_combine_order'] = 'Combine with another order';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_combine_order_message'] = 'Select the order to combine with';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_method'] = 'Shipping Method';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_method_message'] = 'I want my order to be shipped as';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_ship'] = 'Ship';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_ship_message'] = 'Ship order to the following address';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_shop'] = 'Pickup at the shop';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_shop_message'] = 'Choose the shop or another JvH pickup point';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_combine'] = 'Combine with another order';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_shop_message'] = 'Combine your order with a another order';
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date'] = ['Scheduled Shipping Date', 'You can change this to a later moment. Format dd-mm-yyyy'];
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_error'] = 'Invalid shipping date. Please enter in the format dd-mm-yyyy and it should be after %s';
 $GLOBALS['TL_LANG']['MSC']['scheduled_shipping_date_checkout_review_note'] = 'Scheduled shipping date: %s';

@@ -1,0 +1,86 @@
+<h2><?= $this->headline ?></h2>
+<div class="info"><?= $this->message ?></div>
+
+<input type="hidden" name="pickup_servicepoint_id" id="pickup_servicepoint_id" />
+<input type="hidden" name="dhlpickup_servicepoint_name" id="dhlpickup_servicepoint_name" value="<?php echo $this->dhlpickup_servicepoint_name; ?>" />
+<input type="hidden" name="dhlpickup_servicepoint_street" id="dhlpickup_servicepoint_street" value="<?php echo $this->dhlpickup_servicepoint_street; ?>" />
+<input type="hidden" name="dhlpickup_servicepoint_housenumber" id="dhlpickup_servicepoint_housenumber" value="<?php echo $this->dhlpickup_servicepoint_housenumber; ?>" />
+<input type="hidden" name="dhlpickup_servicepoint_postal" id="dhlpickup_servicepoint_postal" value="<?php echo $this->dhlpickup_servicepoint_postal; ?>" />
+<input type="hidden" name="dhlpickup_servicepoint_city" id="dhlpickup_servicepoint_city" value="<?php echo $this->dhlpickup_servicepoint_city; ?>" />
+
+<style type="text/css">
+#dhl_service_point_locator_container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  padding: 32px;
+}
+#dhl_service_point_locator {
+ background-color: white;
+ box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+ height: 100%;
+ width: 100%;
+}
+#dhl_service_point_locator iframe {
+  width: 100%;
+  height: 100%;
+}
+</style>
+<span><?php echo $GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_info']; ?></span>
+
+<div id="dhlpickup_info"><?php echo $this->dhlpickup_info; ?></div>
+
+<button id="iso_checkout_dhlpickup_button" onclick="return false;" class="button">
+<?php if ($this->dhl_servicepoint_id): ?>
+<?php echo $GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_change']; ?>
+<?php else: ?>
+<?php echo $GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_select']; ?>
+<?php endif; ?>
+</button>
+
+<div id="dhl_service_point_locator_container" style="display: none;">
+    <div id="dhl_service_point_locator"><iframe></iframe></div>
+</div>
+
+<script>
+(function(jQuery) {
+    jQuery('#iso_checkout_dhlpickup_button').parent().click(function(e) {
+        e.preventDefault();
+        $('#dhl_service_point_locator_container').show();
+        $('#dhl_service_point_locator iframe').attr("src", "<?php echo $this->selectParcelShopUrl; ?>");
+    });
+})(window.jQuery);
+
+var isotopepackagingslipdhl = window.isotopepackagingslipdhl || {};
+isotopepackagingslipdhl.servicePoints = (function () {
+  'use strict';
+
+  function onWindowMessage(event) {
+    var origin = event.origin;
+    var messageData = event.data;
+    if (messageData.type == 'servicepoint_selected') {
+        var servicePointObject = messageData.servicepoint;
+        document.getElementById('dhlpickup_info').innerHTML = servicePointObject.name + '<br>' + servicePointObject.address.street + ' ' + servicePointObject.address.number + '<br>' + servicePointObject.address.postalCode + ' '+servicePointObject.address.city;
+        document.getElementById('pickup_servicepoint_id').value = servicePointObject.id;
+        document.getElementById('dhlpickup_servicepoint_name').value = servicePointObject.name;
+        document.getElementById('dhlpickup_servicepoint_street').value = servicePointObject.address.street;
+        document.getElementById('dhlpickup_servicepoint_housenumber').value = servicePointObject.address.number;
+        document.getElementById('dhlpickup_servicepoint_postal').value = servicePointObject.address.postalCode;
+        document.getElementById('dhlpickup_servicepoint_city').value = servicePointObject.address.city;
+        if (servicePointObject.id) {
+            document.getElementById("iso_checkout_dhlpickup_button").innerText = '<?php echo $GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_change']; ?>';
+        } else {
+            document.getElementById("iso_checkout_dhlpickup_button").innerText = '<?php echo $GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_select']; ?>';
+        }
+    }
+    $('#dhl_service_point_locator_container').hide();
+  }
+
+  window.addEventListener('message', onWindowMessage, false);
+  return {};
+})();
+
+</script>

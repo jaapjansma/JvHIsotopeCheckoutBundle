@@ -22,12 +22,13 @@ $GLOBALS['ISO_HOOKS']['updateDraftOrder'][] = [ProductionCollectionListener::cla
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [ProductionCollectionListener::class, 'findSurchargesForCollection'];
 
 unset($GLOBALS['ISO_CHECKOUTSTEP']['address']);
-$jvhCheckoutSteps['billing_address'] = ['JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\BillingAddress'];
-$jvhCheckoutSteps['shipping_address'] = ['JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingAddress'];
+unset($GLOBALS['ISO_CHECKOUTSTEP']['shipping']);
+$jvhCheckoutSteps['billing_address'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\BillingAddress';
+$jvhCheckoutSteps['jvh_shipping'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping';
+$jvhCheckoutSteps['jvh_shop'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shop';
+$jvhCheckoutSteps['jvh_combine_order'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\CombineWithOrder';
+$jvhCheckoutSteps['jvh_shipping_to'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingTo';
+$jvhCheckoutSteps['jvh_dhl_pickup'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\DhlPickup';
+$jvhCheckoutSteps['shipping_address'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingAddress';
+$jvhCheckoutSteps['jvh_shipping_method'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingMethod';
 $GLOBALS['ISO_CHECKOUTSTEP'] = array_merge($jvhCheckoutSteps, $GLOBALS['ISO_CHECKOUTSTEP']);
-
-$GLOBALS['ISO_CHECKOUTSTEP']['shipping'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingMethod';
-$shippingMethodIndex = array_search('Isotope\CheckoutStep\ShippingMethod', $GLOBALS['ISO_CHECKOUTSTEP']['shipping']);
-if ($shippingMethodIndex !== false) {
-  unset($GLOBALS['ISO_CHECKOUTSTEP']['shipping'][$shippingMethodIndex]);
-}

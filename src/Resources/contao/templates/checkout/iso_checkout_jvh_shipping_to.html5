@@ -1,0 +1,4 @@
+<h2><?= $this->headline ?></h2>
+<div class="info"><?= $this->message ?></div>
+
+<?= $this->options ?>
