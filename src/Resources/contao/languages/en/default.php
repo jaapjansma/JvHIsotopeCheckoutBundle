@@ -18,16 +18,17 @@
 
 
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['combine'] = ['Combine with another order'];
-$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['Send my order'];
-$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'] = ['I collect my order at the shop or another JvH pickup location'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['My order needs to be shipped'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'] = ['I collect my order at the shop or by one of the JvH pickup locations'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'] = ['Send my order to my home address'];
-$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'] = ['Send my order to a DHL Pickup Point'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'] = ['Send my order to a DHL Pick-up Point'];
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_review'] = 'Order Review';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'] = 'Shipping';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_message'] = 'I want to shipping my order to';
-$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to'] = 'Shipping destination';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to'] = 'To where do you want to ship your order?';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to_message'] = 'To where do you want to ship your order?';
-$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup'] = 'DHL Pickup Point';
-$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_message'] = 'Select a DHL Pickup Point. Only available in the Netherlands';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup'] = 'DHL Pick-up Point';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_message'] = 'Select a DHL Pick-up Point. Only available in the Netherlands';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shop'] = 'Pickup or shop';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shop_message'] = 'Select the pickup point or Jan van Haasteren Shop';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_combine_order'] = 'Combine with another order';

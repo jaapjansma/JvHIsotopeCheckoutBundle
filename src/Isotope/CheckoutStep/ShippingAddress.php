@@ -19,6 +19,7 @@
 namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
 use AppBundle\Model\Shipping\Pickup;
+use Contao\Input;
 use Contao\System;
 use Isotope\Isotope;
 use Isotope\Module\Checkout;
@@ -47,6 +48,14 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
     {
         $isAvailable = parent::isAvailable();
         if ($isAvailable) {
+            $currentStep = \Haste\Input\Input::getAutoItem('step');
+            if ($currentStep == 'billing_address' || $currentStep == 'jvh_shipping' || $currentStep == 'jvh_combine_order') {
+                $isAvailable = false;
+            } elseif ($currentStep == 'jvh_shipping_to' && Input::post('FORM_SUBMIT') != $this->objModule->getFormId()) {
+                $isAvailable = false;
+            }
+        }
+        if ($isAvailable) {
             $shippingMethod = Isotope::getCart()->getShippingMethod();
             $shippingAddress = Isotope::getCart()->getShippingAddress();
             if ($shippingAddress && !empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id)) {
@@ -56,6 +65,21 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
             }
         }
         return $isAvailable;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function review()
+    {
+        $objAddress = Isotope::getCart()->getDraftOrder()->getShippingAddress();
+
+        return array('shipping_address' => array
+        (
+            'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
+            'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
+            'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('shipping_address'),
+        ));
     }
 
     /**
@@ -69,6 +93,27 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
         return array_filter($adresses, function($address) {
             return empty($address->dhl_servicepoint_id);
         });
+    }
+
+    /**
+     * Get available address options
+     *
+     * @param array $arrFields
+     *
+     * @return array
+     */
+    protected function getAddressOptions($arrFields = null)
+    {
+        $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getShippingFieldsConfig());
+        foreach ($arrOptions as $index => $arrOption) {
+            if ($arrOption['value'] == '-1') {
+                // Dit is het factuuradres. Toon ook het factuuradres.
+                $arrOptions[$index]['label'] = '<div class="use_billing_address_header">' . $arrOption['label'] . '</div>' . Isotope::getCart()
+                        ->getBillingAddress()
+                        ->generate($arrFields);
+            }
+        }
+        return $arrOptions;
     }
 
 

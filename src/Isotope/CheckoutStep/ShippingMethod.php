@@ -3,6 +3,7 @@
 namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
 use AppBundle\Model\Shipping\Pickup;
+use Contao\Input;
 use Isotope\CheckoutStep\CheckoutStep;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
@@ -40,9 +41,15 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
     public function isAvailable()
     {
         $isAvailable = Isotope::getCart()->requiresShipping();
-        if (!$isAvailable) {
-            Isotope::getCart()->setShippingMethod(null);
-        } else {
+        if ($isAvailable) {
+            $currentStep = \Haste\Input\Input::getAutoItem('step');
+            if ($currentStep == 'billing_address' || $currentStep == 'jvh_shipping') {
+                $isAvailable = false;
+            } elseif ($currentStep == 'jvh_shipping_to' && Input::post('FORM_SUBMIT') != $this->objModule->getFormId()) {
+                $isAvailable = false;
+            }
+        }
+        if ($isAvailable) {
             $shippingMethod = Isotope::getCart()->getShippingMethod();
             $shippingAddress = Isotope::getCart()->getShippingAddress();
             if ($shippingAddress && (!empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id))) {

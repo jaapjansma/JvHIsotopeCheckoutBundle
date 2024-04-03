@@ -23,6 +23,7 @@ $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [ProductionCollectionLi
 
 unset($GLOBALS['ISO_CHECKOUTSTEP']['address']);
 unset($GLOBALS['ISO_CHECKOUTSTEP']['shipping']);
+unset($GLOBALS['ISO_CHECKOUTSTEP']['review']);
 $jvhCheckoutSteps['billing_address'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\BillingAddress';
 $jvhCheckoutSteps['jvh_shipping'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping';
 $jvhCheckoutSteps['jvh_shop'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shop';
@@ -32,3 +33,4 @@ $jvhCheckoutSteps['jvh_dhl_pickup'][] = 'JvH\IsotopeCheckoutBundle\Isotope\Check
 $jvhCheckoutSteps['shipping_address'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingAddress';
 $jvhCheckoutSteps['jvh_shipping_method'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingMethod';
 $GLOBALS['ISO_CHECKOUTSTEP'] = array_merge($jvhCheckoutSteps, $GLOBALS['ISO_CHECKOUTSTEP']);
+$GLOBALS['ISO_CHECKOUTSTEP']['jvh_review'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\OrderInfo';

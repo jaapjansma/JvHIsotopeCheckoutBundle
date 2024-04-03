@@ -30,6 +30,7 @@ use Isotope\Template;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\CombineOrder;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\ShippingSubStep;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\Shop;
+use Krabo\IsotopePackagingSlipBundle\Model\Shipping\CombinePackagingSlip;
 
 
 class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
@@ -46,18 +47,24 @@ class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
      */
     public function isAvailable()
     {
-        $available = Isotope::getCart()->requiresShipping();
-
-        if (!$available) {
-            Isotope::getCart()->setShippingMethod(null);
-        } else {
-            $shippingMethod = Isotope::getCart()->getShippingMethod();
-            if ($shippingMethod instanceof Pickup || $shippingMethod instanceof \AppBundle\Model\Shipping\CombineOrder) {
-                $available = false;
+        $isAvailable = Isotope::getCart()->requiresShipping();
+        if ($isAvailable) {
+            $currentStep = \Haste\Input\Input::getAutoItem('step');
+            if ($currentStep == 'billing_address' || $currentStep == 'jvh_combine_order') {
+                $isAvailable = false;
+            } elseif ($currentStep == 'jvh_shipping' && Input::post('FORM_SUBMIT') != $this->objModule->getFormId()) {
+                $isAvailable = false;
             }
         }
 
-        return $available;
+        if ($isAvailable) {
+            $shippingMethod = Isotope::getCart()->getShippingMethod();
+            if ($shippingMethod instanceof Pickup || $shippingMethod instanceof \AppBundle\Model\Shipping\CombineOrder || $shippingMethod instanceof CombinePackagingSlip) {
+                $isAvailable = false;
+            }
+        }
+
+        return $isAvailable;
     }
 
     /**

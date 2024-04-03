@@ -56,7 +56,6 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
         if (!$available) {
             Isotope::getCart()->setShippingMethod(null);
         }
-
         return $available;
     }
 

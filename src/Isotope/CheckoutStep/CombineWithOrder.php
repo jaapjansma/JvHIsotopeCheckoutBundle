@@ -49,9 +49,7 @@ class CombineWithOrder extends CheckoutStep implements IsotopeCheckoutStep {
     public function isAvailable()
     {
         $available = Isotope::getCart()->requiresShipping();
-        if (!$available) {
-            Isotope::getCart()->setShippingMethod(null);
-        } else {
+        if ($available) {
             $shippingMethod = Isotope::getCart()->getShippingMethod();
             if (!$shippingMethod instanceof CombinePackagingSlip) {
                 $available = false;

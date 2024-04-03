@@ -55,20 +55,11 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
     $blnRequiresPayment = $draftOrder->requiresPayment();
     $blnRequiresShipping = $draftOrder->requiresShipping();
     $objBillingAddress = $draftOrder->getBillingAddress();
-    $objShippingAddress = $draftOrder->getShippingAddress();
 
     $canEdit = !$this->isSkippable();
     $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
-    if ($blnRequiresPayment && $blnRequiresShipping && $objBillingAddress->id == $objShippingAddress->id) {
-      $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
-      $canEdit = $canEdit || !$this->objModule->canSkipStep('shipping_address');
-    }
-    elseif ($blnRequiresShipping && $objBillingAddress->id == $objShippingAddress->id) {
-      $strHeadline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-      $canEdit = $canEdit || !$this->objModule->canSkipStep('shipping_address');
-    }
-    elseif (!$blnRequiresPayment && !$blnRequiresShipping) {
+    if (!$blnRequiresPayment && !$blnRequiresShipping) {
       $strHeadline = $GLOBALS['TL_LANG']['MSC']['customer_address'];
     }
 

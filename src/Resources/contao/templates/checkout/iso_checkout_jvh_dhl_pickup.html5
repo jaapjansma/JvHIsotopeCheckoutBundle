@@ -41,6 +41,9 @@
 <?php endif; ?>
 </button>
 
+<br />
+<?php echo $this->shippingDate; ?>
+
 <div id="dhl_service_point_locator_container" style="display: none;">
     <div id="dhl_service_point_locator"><iframe></iframe></div>
 </div>
