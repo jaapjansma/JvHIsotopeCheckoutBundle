@@ -17,11 +17,11 @@
  */
 
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['combine'] = ['Combineer met een andere bestelling'];
-$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['Mijn bestelling dient opgestuurd worden'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['Mijn bestelling moet opgestuurd worden'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'] = ['Mijn bestelling haal ik op in de winkel of bij een van de JvH-afhaalpunten'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'] = ['Verstuur mijn bestelling naar mijn thuisadres'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'] = ['Mijn bestelling versturen naar DHL Pick-up Point'];
-$GLOBALS['TL_LANG']['MSC']['checkout_jvh_review'] = 'Bestelling Controleren';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_review'] = 'Bestelling controleren';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'] = 'Verzending';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_message'] = 'Ik wil mijn bestelling op de volgende wijze versturen';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to'] = 'Waar mag de bestelling naar toe?';

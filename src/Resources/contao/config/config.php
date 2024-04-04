@@ -33,4 +33,5 @@ $jvhCheckoutSteps['jvh_dhl_pickup'][] = 'JvH\IsotopeCheckoutBundle\Isotope\Check
 $jvhCheckoutSteps['shipping_address'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingAddress';
 $jvhCheckoutSteps['jvh_shipping_method'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\ShippingMethod';
 $GLOBALS['ISO_CHECKOUTSTEP'] = array_merge($jvhCheckoutSteps, $GLOBALS['ISO_CHECKOUTSTEP']);
-$GLOBALS['ISO_CHECKOUTSTEP']['jvh_review'][] = 'JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\OrderInfo';
+$GLOBALS['ISO_CHECKOUTSTEP']['payment'] = ['JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\PaymentMethod'];
+$GLOBALS['ISO_CHECKOUTSTEP']['jvh_review'] = ['JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\OrderInfo', 'Isotope\CheckoutStep\OrderProducts'];
