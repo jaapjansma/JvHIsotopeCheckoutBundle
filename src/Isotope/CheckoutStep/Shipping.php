@@ -140,14 +140,14 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
         $this->blnError = true;
         if (!empty($firstShopShippingMethod)) {
             $this->blnError = false;
-            Isotope::getCart()->combined_order_id = '';
+            Isotope::getCart()->combined_packaging_slip_id = '';
             Isotope::getCart()->setShippingMethod($firstShopShippingMethod);
             Isotope::getCart()->setShippingAddress(null);
         }
     }
 
     private function selectShip() {
-        Isotope::getCart()->combined_order_id = '';
+        Isotope::getCart()->combined_packaging_slip_id = '';
         Isotope::getCart()->setShippingMethod(null);
         Isotope::getCart()->setShippingAddress(null);
     }
@@ -157,7 +157,7 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
         $this->blnError = true;
         if (!empty($shippingMethod)) {
             $this->blnError = false;
-            Isotope::getCart()->combined_order_id = '';
+            Isotope::getCart()->combined_packaging_slip_id = '';
             Isotope::getCart()->setShippingMethod($shippingMethod);
             Isotope::getCart()->setShippingAddress(null);
         }

@@ -1,7 +1,7 @@
 <h2><?= $this->headline ?></h2>
 <div class="info"><?= $this->message ?></div>
 
-<input type="hidden" name="pickup_servicepoint_id" id="pickup_servicepoint_id" />
+<input type="hidden" name="pickup_servicepoint_id" id="pickup_servicepoint_id" value="<?php echo $this->dhl_servicepoint_id; ?>" />
 <input type="hidden" name="dhlpickup_servicepoint_name" id="dhlpickup_servicepoint_name" value="<?php echo $this->dhlpickup_servicepoint_name; ?>" />
 <input type="hidden" name="dhlpickup_servicepoint_street" id="dhlpickup_servicepoint_street" value="<?php echo $this->dhlpickup_servicepoint_street; ?>" />
 <input type="hidden" name="dhlpickup_servicepoint_housenumber" id="dhlpickup_servicepoint_housenumber" value="<?php echo $this->dhlpickup_servicepoint_housenumber; ?>" />

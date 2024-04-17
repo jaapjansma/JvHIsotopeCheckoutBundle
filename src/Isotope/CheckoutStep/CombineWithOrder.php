@@ -88,12 +88,12 @@ class CombineWithOrder extends CheckoutStep implements IsotopeCheckoutStep {
                 $this->blnError = true;
                 if ($shippingMethod) {
                     $packagingSlipModel = IsotopePackagingSlipModel::findOneBy('id', substr($objWidget->value, 15));
-                    Isotope::getCart()->combined_order_id = '';
+                    Isotope::getCart()->combined_packaging_slip_id = '';
                     Isotope::getCart()->setShippingAddress(null);
                     Isotope::getCart()->setShippingMethod(null);
                     if ($packagingSlipModel) {
                         $this->blnError = false;
-                        Isotope::getCart()->combined_order_id = $packagingSlipModel->document_number;
+                        Isotope::getCart()->combined_packaging_slip_id = $packagingSlipModel->document_number;
                         Isotope::getCart()->setShippingMethod($shippingMethod);
                         $objAddress = Address::createForProductCollection(Isotope::getCart(), Isotope::getConfig()->getShippingFields(), false, false);
                         foreach(Isotope::getConfig()->getShippingFields() as $field) {
@@ -154,10 +154,10 @@ class CombineWithOrder extends CheckoutStep implements IsotopeCheckoutStep {
     private function getSelectedOption(): string {
         $this->initializeModules();
         $shippingMethod = Isotope::getCart()->getShippingMethod();
-        if (Isotope::getCart()->combined_order_id && $shippingMethod instanceof CombinePackagingSlip) {
+        if (Isotope::getCart()->combined_packaging_slip_id && $shippingMethod instanceof CombinePackagingSlip) {
             foreach ($this->options as $option) {
                 $packagingSlipModel = IsotopePackagingSlipModel::findOneBy('id', substr($option['value'], 15));
-                if ($packagingSlipModel && $packagingSlipModel->getDocumentNumber() == Isotope::getCart()->combined_order_id) {
+                if ($packagingSlipModel && $packagingSlipModel->getDocumentNumber() == Isotope::getCart()->combined_packaging_slip_id) {
                     return $option['value'];
                 }
             }

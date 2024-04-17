@@ -21,6 +21,7 @@ namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 use AppBundle\Model\Shipping\Pickup;
 use Contao\Input;
 use Contao\System;
+use Contao\Widget;
 use Isotope\CheckoutStep\CheckoutStep;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
@@ -76,6 +77,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
             $allowShippingDateChange = TRUE;
         }
 
+        /** @var Widget $objWidget */
         $objWidget = new $GLOBALS['TL_FFL']['hidden'](
             [
                 'id'          => 'pickup_servicepoint_id',
@@ -89,10 +91,8 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
 
         $earliestShippingDateStringValue = '';
         $objShipper = null;
-        if (Isotope::getCart()->shipping_id) {
-            if ($this->modules[Isotope::getCart()->shipping_id]->shipper_id) {
-                $objShipper = IsotopePackagingSlipShipperModel::findByPk($this->modules[Isotope::getCart()->shipping_id]->shipper_id);
-            }
+        if ($dhlPickUpMethod->shipping_id) {
+          $objShipper = IsotopePackagingSlipShipperModel::findByPk($dhlPickUpMethod->shipper_id);
         }
         $earliestShippingDateTimeStamp = IsotopeHelper::getScheduledShippingDate(Isotope::getCart(), $objShipper);
         if (empty(Isotope::getCart()->scheduled_shipping_date) || date('Ymd', Isotope::getCart()->scheduled_shipping_date) < date('Ymd', $earliestShippingDateTimeStamp)) {
@@ -251,6 +251,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
     }
 
     private function initializeModules() {
+
     }
 
     private function getSelectedOption(): string {

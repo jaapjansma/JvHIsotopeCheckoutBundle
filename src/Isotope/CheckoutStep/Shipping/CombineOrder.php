@@ -54,7 +54,7 @@ class CombineOrder {
 
     public function isSelected(): bool {
         $shippingMethod = Isotope::getCart()->getShippingMethod();
-        if (Isotope::getCart()->combined_order_id && $shippingMethod instanceof CombinePackagingSlip) {
+        if (Isotope::getCart()->combined_packaging_slip_id && $shippingMethod instanceof CombinePackagingSlip) {
             return true;
         }
         return false;

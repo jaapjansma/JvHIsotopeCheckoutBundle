@@ -83,10 +83,10 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
 
         $shippingMethodAllowsShippingDateChange = [];
         $combineShippingMethod = Shipping::findOneBy('type', 'combine_packaging_slip');
-        $combined_order_id = Isotope::getCart()->combined_order_id;
+        $combined_packaging_slip_id = Isotope::getCart()->combined_packaging_slip_id;
         if ($combineShippingMethod->skipShippingMethodSelection()) {
             $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
-        } elseif (!empty($combined_order_id)) {
+        } elseif (!empty($combined_packaging_slip_id)) {
             $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
         }
 
@@ -267,7 +267,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
         $allowedShippingMethods = NULL;
         $shippingMethodAllowsShippingDateChange = [];
         $combineShippingMethod = Shipping::findOneBy('type', 'combine_packaging_slip');
-        $combined_order_id = Isotope::getCart()->combined_order_id;
+        $combined_packaging_slip_id = Isotope::getCart()->combined_packaging_slip_id;
         $shippingAddress = Isotope::getCart()->getShippingAddress();
         if (!empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id)) {
             $dhlPickupPointShippingMethod = Shipping::findOneById(DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
@@ -278,7 +278,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
         if ($combineShippingMethod->skipShippingMethodSelection()) {
             $allowedShippingMethods[] = $combineShippingMethod->id;
             $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
-        } elseif (!empty($combined_order_id)) {
+        } elseif (!empty($combined_packaging_slip_id)) {
             $allowedShippingMethods[] = $combineShippingMethod->id;
             $shippingMethodAllowsShippingDateChange[] = $combineShippingMethod->id;
         }
