@@ -1,4 +1,7 @@
 <h2><?= $this->headline ?></h2>
+<?php if(!empty($this->errors)) { ?>
+<div class="error"><?php echo $this->errors; ?></div>
+<?php } ?>
 <div class="info"><?= $this->message ?></div>
 
 <input type="hidden" name="pickup_servicepoint_id" id="pickup_servicepoint_id" value="<?php echo $this->dhl_servicepoint_id; ?>" />

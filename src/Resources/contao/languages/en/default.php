@@ -20,7 +20,7 @@
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['combine'] = ['Combine with another order'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['My order needs to be shipped'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'] = ['I collect my order at the shop or by one of the JvH pickup locations'];
-$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'] = ['Send my order to my home address'];
+$GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'] = ['Send my order to an address'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'] = ['Send my order to a DHL Pick-up Point'];
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_review'] = 'Order review';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'] = 'Shipping';
@@ -28,6 +28,7 @@ $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_message'] = 'I want to shippin
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to'] = 'To where do you want to ship your order?';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_to_message'] = 'To where do you want to ship your order?';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup'] = 'DHL Pick-up Point';
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_required'] = 'You need to select a DHL Pick-up Point';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_message'] = 'Select a DHL Pick-up Point. Only available in the Netherlands';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shop'] = 'Pickup or shop';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shop_message'] = 'Select the pickup point or Jan van Haasteren Shop';
