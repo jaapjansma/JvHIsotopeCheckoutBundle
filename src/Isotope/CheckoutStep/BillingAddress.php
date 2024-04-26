@@ -73,4 +73,19 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
     ];
   }
 
+  protected function setAddress(AddressModel $objAddress): void {
+    $arrShopCountries = Isotope::getConfig()->getBillingCountries();
+    if (!\in_array($objAddress->country, $arrShopCountries, TRUE)) {
+      if (Isotope::getCart()->config_id == 2) {
+        Isotope::getCart()->config_id = 3;
+        Isotope::getCart()->save();
+      }
+      elseif (Isotope::getCart()->config_id == 3) {
+        Isotope::getCart()->config_id = 2;
+        Isotope::getCart()->save();
+      }
+    }
+    parent::setAddress($objAddress);
+  }
+
 }

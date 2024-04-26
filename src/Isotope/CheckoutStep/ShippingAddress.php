@@ -22,6 +22,7 @@ use AppBundle\Model\Shipping\Pickup;
 use Contao\Input;
 use Contao\System;
 use Isotope\Isotope;
+use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Krabo\IsotopePackagingSlipBundle\Model\Shipping\CombinePackagingSlip;
 use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHL;
@@ -115,6 +116,21 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
         }
         return $arrOptions;
     }
+
+  protected function setAddress(AddressModel $objAddress): void {
+    $arrShopCountries = Isotope::getConfig()->getBillingCountries();
+    if (!\in_array($objAddress->country, $arrShopCountries, TRUE)) {
+      if (Isotope::getCart()->config_id == 2) {
+        Isotope::getCart()->config_id = 3;
+        Isotope::getCart()->save();
+      }
+      elseif (Isotope::getCart()->config_id == 3) {
+        Isotope::getCart()->config_id = 2;
+        Isotope::getCart()->save();
+      }
+    }
+    parent::setAddress($objAddress);
+  }
 
 
 }
