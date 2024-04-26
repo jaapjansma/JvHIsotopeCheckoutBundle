@@ -20,6 +20,7 @@ namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
 use AppBundle\Model\Shipping\Pickup;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\CheckoutStep\CheckoutStep;
@@ -47,21 +48,25 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
      */
     public function isAvailable()
     {
-      $isAvailable = Isotope::getCart()->requiresShipping();
-        if ($isAvailable) {
-          $currentStep = \Haste\Input\Input::getAutoItem('step');
-          if ($currentStep == 'billing_address' || $currentStep == 'jvh_shipping' || $currentStep == 'jvh_combine_order') {
-            $isAvailable = false;
-          } elseif ($currentStep == 'jvh_shipping_to' && Input::post('FORM_SUBMIT') != $this->objModule->getFormId()) {
+      $isAvailable = false;
+      $dhlPickUpMethod = Shipping::findByPk(self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
+      if ($dhlPickUpMethod->enabled) {
+        $isAvailable = Isotope::getCart()->requiresShipping();
+      }
+      if ($isAvailable) {
+        $currentStep = \Haste\Input\Input::getAutoItem('step');
+        if ($currentStep == 'billing_address' || $currentStep == 'jvh_shipping' || $currentStep == 'jvh_combine_order') {
+          $isAvailable = false;
+        } elseif ($currentStep == 'jvh_shipping_to' && Input::post('FORM_SUBMIT') != $this->objModule->getFormId()) {
+          $isAvailable = false;
+        }
+      }
+      if ($isAvailable) {
+          $shippingMethod = Isotope::getCart()->getShippingMethod();
+          if (!$shippingMethod || ($shippingMethod->getId() != self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID) ) {
             $isAvailable = false;
           }
-        }
-        if ($isAvailable) {
-            $shippingMethod = Isotope::getCart()->getShippingMethod();
-            if (!$shippingMethod || ($shippingMethod->getId() != self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID) ) {
-              $isAvailable = false;
-            }
-        }
+      }
 
         return $isAvailable;
     }
@@ -75,7 +80,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
         $strError = '';
         $this->initializeModules();
 
-        $dhlPickUpMethod = Shipping::findByPk(DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
+        $dhlPickUpMethod = Shipping::findByPk(self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
         $objShipper = NULL;
         if ($dhlPickUpMethod->shipper_id) {
             $objShipper = IsotopePackagingSlipShipperModel::findByPk($dhlPickUpMethod->shipper_id);

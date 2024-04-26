@@ -126,10 +126,13 @@ class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
                 'value' => 'home',
                 'label' => $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'][0]
             ];
-            $this->options[] = [
+            $dhlPickUpMethod = Shipping::findByPk(DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
+            if ($dhlPickUpMethod->enabled && $dhlPickUpMethod->isAvailable()) {
+              $this->options[] = [
                 'value' => 'pickup',
                 'label' => $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'][0]
-            ];
+              ];
+            }
         }
         return $this->options;
     }

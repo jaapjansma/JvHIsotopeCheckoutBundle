@@ -29,7 +29,7 @@ use Isotope\Model\Shipping;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
-class Ship extends ShippingSubStep {
+class Ship {
 
     /**
      * @var array
@@ -82,8 +82,7 @@ class Ship extends ShippingSubStep {
                 if (!$this->blnError) {
                     $varValue = (string) $objWidget->value;
                     if ($varValue === '-1') {
-                        Isotope::getCart()->setShippingAddress(Isotope::getCart()->getBillingAddress());
-                        Isotope::getCart()->setShippingMethod(null);
+                        $this->setAddress(Isotope::getCart()->getBillingAddress());
                     } elseif ($varValue === '0') {
                         $objAddress = $this->getDefaultAddress();
                         $arrAddress = $this->validateFields();
@@ -92,13 +91,11 @@ class Ship extends ShippingSubStep {
                                 $objAddress->$field = $value;
                             }
                             $objAddress->save();
-                            Isotope::getCart()->setShippingAddress($objAddress);
-                            Isotope::getCart()->setShippingMethod(null);
+                            $this->setAddress($objAddress);
                         }
                     } else {
                         $objAddress = AddressModel::findByPk($varValue);
-                        Isotope::getCart()->setShippingAddress($objAddress);
-                        Isotope::getCart()->setShippingMethod(null);
+                        $this->setAddress($objAddress);
                     }
                 }
             }
@@ -368,6 +365,22 @@ class Ship extends ShippingSubStep {
 
         return $fields;
     }
+
+  protected function setAddress(AddressModel $objAddress): void {
+    $arrShopCountries = Isotope::getConfig()->getBillingCountries();
+    if (!\in_array($objAddress->country, $arrShopCountries, TRUE)) {
+      if (Isotope::getCart()->config_id == 2) {
+        Isotope::getCart()->config_id = 3;
+        Isotope::getCart()->save();
+      }
+      elseif (Isotope::getCart()->config_id == 3) {
+        Isotope::getCart()->config_id = 2;
+        Isotope::getCart()->save();
+      }
+    }
+    Isotope::getCart()->setShippingAddress($objAddress);
+    Isotope::getCart()->setShippingMethod(null);
+  }
 
 
 }
