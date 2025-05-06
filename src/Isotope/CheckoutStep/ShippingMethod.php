@@ -17,7 +17,7 @@ use Krabo\IsotopePackagingSlipBundle\Model\Shipping\CombinePackagingSlip;
 use Isotope\Interfaces\IsotopeProductCollection;
 use JvH\IsotopeCheckoutBundle\Validator;
 use Krabo\IsotopePackagingSlipBundle\Model\IsotopePackagingSlipModel;
-use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHL;
+use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHLParcelShop;
 
 class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
 
@@ -54,7 +54,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
             $shippingAddress = Isotope::getCart()->getShippingAddress();
             if ($shippingAddress && (!empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id))) {
                 $isAvailable = false;
-            } elseif ($shippingMethod instanceof CombinePackagingSlip || $shippingMethod instanceof Pickup || ($shippingMethod instanceof DHL && $shippingMethod->getId() == DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID)) {
+            } elseif ($shippingMethod instanceof CombinePackagingSlip || $shippingMethod instanceof Pickup || ($shippingMethod instanceof DHLParcelShop)) {
                 $isAvailable = false;
             }
         }
@@ -270,7 +270,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
         $combined_packaging_slip_id = Isotope::getCart()->combined_packaging_slip_id;
         $shippingAddress = Isotope::getCart()->getShippingAddress();
         if (!empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id)) {
-            $dhlPickupPointShippingMethod = Shipping::findOneById(DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
+            $dhlPickupPointShippingMethod = DHLParcelShop::getParcelShopShippingMethod();
             if ($dhlPickupPointShippingMethod) {
                 $allowedShippingMethods[] = $dhlPickupPointShippingMethod->id;
             }

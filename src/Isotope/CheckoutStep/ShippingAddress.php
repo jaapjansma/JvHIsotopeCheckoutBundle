@@ -25,7 +25,7 @@ use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Krabo\IsotopePackagingSlipBundle\Model\Shipping\CombinePackagingSlip;
-use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHL;
+use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHLParcelShop;
 
 class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
 
@@ -61,7 +61,7 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
             $shippingAddress = Isotope::getCart()->getShippingAddress();
             if ($shippingAddress && !empty($shippingAddress->sendcloud_servicepoint_id) || !empty($shippingAddress->dhl_servicepoint_id)) {
                 $isAvailable = false;
-            } elseif ($shippingMethod instanceof CombinePackagingSlip || $shippingMethod instanceof Pickup || ($shippingMethod instanceof DHL && $shippingMethod->getId() == DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID)) {
+            } elseif ($shippingMethod instanceof CombinePackagingSlip || $shippingMethod instanceof Pickup || ($shippingMethod instanceof DHLParcelShop)) {
                 $isAvailable = false;
             }
         }

@@ -31,6 +31,7 @@ use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\CombineOrder;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\ShippingSubStep;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\Shop;
 use Krabo\IsotopePackagingSlipBundle\Model\Shipping\CombinePackagingSlip;
+use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHLParcelShop;
 
 
 class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
@@ -92,9 +93,11 @@ class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
             $this->blnError = $objWidget->hasErrors();
             if (!$objWidget->hasErrors()) {
                 $varValue = $objWidget->value;
-                if ($varValue == 'pickup') {
-                    $dhlPickUpMethod = Shipping::findByPk(DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
-                    Isotope::getCart()->setShippingAddress(null);
+                if ($varValue == 'pickup' && $dhlPickUpMethod = DHLParcelShop::getParcelShopShippingMethod()) {
+                    $shippingAddress = Isotope::getCart()->getShippingAddress();
+                    if (!$shippingAddress || (!$shippingAddress->dhl_servicepoint_id)) {
+                      Isotope::getCart()->setShippingAddress(null);
+                    }
                     Isotope::getCart()->setShippingMethod($dhlPickUpMethod);
                 } else {
                     Isotope::getCart()->setShippingAddress(null);
@@ -126,8 +129,8 @@ class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
                 'value' => 'home',
                 'label' => $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'][0]
             ];
-            $dhlPickUpMethod = Shipping::findByPk(DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
-            if ($dhlPickUpMethod->enabled && $dhlPickUpMethod->isAvailable()) {
+            $dhlPickUpMethod = DHLParcelShop::getParcelShopShippingMethod();
+            if ($dhlPickUpMethod && $dhlPickUpMethod->enabled && $dhlPickUpMethod->isAvailable()) {
               $this->options[] = [
                 'value' => 'pickup',
                 'label' => $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'][0]
@@ -141,8 +144,8 @@ class ShippingTo extends CheckoutStep implements IsotopeCheckoutStep {
         $this->initializeModules();
         $shippingMethod = Isotope::getCart()->getShippingMethod();
         $shippingAddress = Isotope::getCart()->getShippingAddress();
-        if ($shippingMethod && ($shippingMethod->getId() != DhlPickup::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID)) {
-            return 'pickiup';
+        if ($shippingMethod && $shippingMethod instanceof DHLParcelShop) {
+            return 'pickup';
         } elseif ($shippingAddress) {
             return 'home';
         }

@@ -34,13 +34,12 @@ use JvH\IsotopeCheckoutBundle\Validator;
 use Krabo\IsotopePackagingSlipBundle\Helper\IsotopeHelper;
 use Krabo\IsotopePackagingSlipBundle\Model\IsotopePackagingSlipShipperModel;
 use Krabo\IsotopePackagingSlipDHLBundle\DHL\EndPoints\ServicePoints;
+use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHLParcelShop;
 use Mvdnbrk\DhlParcel\Exceptions\DhlParcelException;
 use Mvdnbrk\DhlParcel\Resources\ServicePoint as ServicePointResource;
 use Symfony\Component\Cache\CacheItem;
 
 class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
-
-    public const DHL_PARCEL_SHOP_SHIPPING_METHOD_ID = 158;
 
     /**
      * Return true if the checkout step is available
@@ -49,8 +48,8 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
     public function isAvailable()
     {
       $isAvailable = false;
-      $dhlPickUpMethod = Shipping::findByPk(self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
-      if ($dhlPickUpMethod->enabled) {
+      $dhlPickUpMethod = DHLParcelShop::getParcelShopShippingMethod();
+      if ($dhlPickUpMethod && $dhlPickUpMethod->enabled) {
         $isAvailable = Isotope::getCart()->requiresShipping();
       }
       if ($isAvailable) {
@@ -63,7 +62,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
       }
       if ($isAvailable) {
           $shippingMethod = Isotope::getCart()->getShippingMethod();
-          if (!$shippingMethod || ($shippingMethod->getId() != self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID) ) {
+          if (!$shippingMethod || (!$shippingMethod instanceof DHLParcelShop) ) {
             $isAvailable = false;
           }
       }
@@ -80,11 +79,21 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
         $strError = '';
         $this->initializeModules();
 
-        $dhlPickUpMethod = Shipping::findByPk(self::DHL_PARCEL_SHOP_SHIPPING_METHOD_ID);
+        $dhlPickUpMethod = DHLParcelShop::getParcelShopShippingMethod();
         $objShipper = NULL;
-        if ($dhlPickUpMethod->shipper_id) {
+        if ($dhlPickUpMethod && $dhlPickUpMethod->shipper_id) {
             $objShipper = IsotopePackagingSlipShipperModel::findByPk($dhlPickUpMethod->shipper_id);
         }
+
+        $headline = '';
+        if ($dhlPickUpMethod) {
+          $price = $dhlPickUpMethod->getSurcharge(Isotope::getCart())->total_price;
+          if ($price) {
+            $price = Isotope::formatPriceWithCurrency($price);
+            $headline = sprintf($GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_info'], $price);
+          }
+        }
+
 
         $allowShippingDateChange = false;
         if ($objShipper && $objShipper->customer_can_provide_shipping_date) {
@@ -104,10 +113,6 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
         );
 
         $earliestShippingDateStringValue = '';
-        $objShipper = null;
-        if ($dhlPickUpMethod->shipping_id) {
-          $objShipper = IsotopePackagingSlipShipperModel::findByPk($dhlPickUpMethod->shipper_id);
-        }
         $earliestShippingDateTimeStamp = IsotopeHelper::getScheduledShippingDate(Isotope::getCart(), $objShipper);
         if (empty(Isotope::getCart()->scheduled_shipping_date) || date('Ymd', Isotope::getCart()->scheduled_shipping_date) < date('Ymd', $earliestShippingDateTimeStamp)) {
             $earliestShippingDateStringValue = date('d-m-Y', $earliestShippingDateTimeStamp);
@@ -163,7 +168,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
                 else {
                     Isotope::getCart()->scheduled_shipping_date = '';
                 }
-                if (!$this->blnError) {
+                if ($dhlPickUpMethod && !$this->blnError) {
                     $objAddress = Address::createForProductCollection(Isotope::getCart(), Isotope::getConfig()->getShippingFields(), false, false);
                     $billingAddress = Isotope::getCart()->getBillingAddress();
                     $objAddress->salutation = $billingAddress->salutation;
@@ -189,7 +194,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
 
         $router = \System::getContainer()->get('router');
         $objTemplate                  = new Template('iso_checkout_jvh_dhl_pickup');
-        $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup'];
+        $objTemplate->headline        = $headline;
         $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_message'];
         $objTemplate->errors = $strError;
         $objTemplate->selectParcelShopUrl = $router->generate('isotopepackagingslipdhl_selectparcelshop');

@@ -25,8 +25,11 @@ use Isotope\Isotope;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\CombineOrder;
+use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\Ship;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\ShippingSubStep;
 use JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep\Shipping\Shop;
+use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHL;
+use Krabo\IsotopePackagingSlipDHLBundle\Model\Shipping\DHLParcelShop;
 
 
 class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
@@ -148,8 +151,11 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
 
     private function selectShip() {
         Isotope::getCart()->combined_packaging_slip_id = '';
-        Isotope::getCart()->setShippingMethod(null);
-        Isotope::getCart()->setShippingAddress(null);
+        $shippingMethod = Isotope::getCart();
+        if (!$shippingMethod || (!$shippingMethod instanceof DHL && !$shippingMethod instanceof DHLParcelShop)) {
+          //Isotope::getCart()->setShippingMethod(null);
+          //Isotope::getCart()->setShippingAddress(null);
+        }
     }
 
     private function selectCombinedOrder() {
