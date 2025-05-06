@@ -151,10 +151,10 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
 
     private function selectShip() {
         Isotope::getCart()->combined_packaging_slip_id = '';
-        $shippingMethod = Isotope::getCart();
+        $shippingMethod = Isotope::getCart()->getShippingMethod();
         if (!$shippingMethod || (!$shippingMethod instanceof DHL && !$shippingMethod instanceof DHLParcelShop)) {
-          //Isotope::getCart()->setShippingMethod(null);
-          //Isotope::getCart()->setShippingAddress(null);
+          Isotope::getCart()->setShippingMethod(null);
+          Isotope::getCart()->setShippingAddress(null);
         }
     }
 
