@@ -194,7 +194,8 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
 
         $router = \System::getContainer()->get('router');
         $objTemplate                  = new Template('iso_checkout_jvh_dhl_pickup');
-        $objTemplate->headline        = $headline;
+        $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup'];
+        $objTemplate->shipping_method_headline = $headline;
         $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['checkout_jvh_dhl_pickup_message'];
         $objTemplate->errors = $strError;
         $objTemplate->selectParcelShopUrl = $router->generate('isotopepackagingslipdhl_selectparcelshop');

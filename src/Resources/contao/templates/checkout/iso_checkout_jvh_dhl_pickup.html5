@@ -32,7 +32,7 @@
   height: 100%;
 }
 </style>
-<span><?php echo $GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_info']; ?></span>
+<span><?php echo $this->shipping_method_headline; ?></span>
 
 <div id="dhlpickup_info"><?php echo $this->dhlpickup_info; ?></div>
 

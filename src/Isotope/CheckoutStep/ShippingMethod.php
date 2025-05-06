@@ -325,7 +325,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep {
                 $cadeaubonShippingMethodIds = [];
                 foreach ($objModules as $objModule) {
 
-                    if (!$objModule->isAvailable()) {
+                    if (!$objModule->isAvailable() || $objModule instanceof DHLParcelShop) {
                         continue;
                     }
                     if ($objModule instanceof Cadeaubon) {
