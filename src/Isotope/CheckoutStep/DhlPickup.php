@@ -87,11 +87,7 @@ class DhlPickup extends CheckoutStep implements IsotopeCheckoutStep {
 
         $headline = '';
         if ($dhlPickUpMethod) {
-          $price = $dhlPickUpMethod->getSurcharge(Isotope::getCart())->total_price;
-          if ($price) {
-            $price = Isotope::formatPriceWithCurrency($price);
-            $headline = sprintf($GLOBALS['TL_LANG']['MSC']['shipping_dhl_pickup_info'], $price);
-          }
+          $headline = $dhlPickUpMethod->label;
         }
 
 
