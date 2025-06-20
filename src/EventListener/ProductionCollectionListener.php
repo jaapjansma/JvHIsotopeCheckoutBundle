@@ -18,13 +18,27 @@
 
 namespace JvH\IsotopeCheckoutBundle\EventListener;
 
+use Contao\Template;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Message;
+use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge;
 
 class ProductionCollectionListener {
+
+  public function addCollectionToTemplate(Template $objTemplate, array $arrItems, IsotopeProductCollection $objCollection, array $arrConfig) {
+    foreach ($objCollection->getItems() as $objItem) {
+      $product = $objItem->getProduct();
+      if ($product instanceof Product) {
+        if (!$product->isAvailableInFrontend()) {
+          Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['checkout_jvh_product_notavailable'], $product->getName()));
+        }
+      }
+    }
+  }
 
   /**
    * Copy the combined packaging slip from the source to the new cart.

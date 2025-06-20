@@ -20,6 +20,7 @@ use JvH\IsotopeCheckoutBundle\EventListener\ProductionCollectionListener;
 
 $GLOBALS['ISO_HOOKS']['updateDraftOrder'][] = [ProductionCollectionListener::class, 'updateDraftOrder'];
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [ProductionCollectionListener::class, 'findSurchargesForCollection'];
+$GLOBALS['ISO_HOOKS']['addCollectionToTemplate'][] = [ProductionCollectionListener::class, 'addCollectionToTemplate'];
 
 unset($GLOBALS['ISO_CHECKOUTSTEP']['address']);
 unset($GLOBALS['ISO_CHECKOUTSTEP']['shipping']);

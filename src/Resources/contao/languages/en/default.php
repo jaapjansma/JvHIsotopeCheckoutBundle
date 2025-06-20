@@ -22,6 +22,7 @@ $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['ship'] = ['My order needs to
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'] = ['I collect my order at the shop or by one of the JvH pickup locations'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['home'] = ['Send my order to an address'];
 $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['pickup'] = ['Send my order to a DHL Pick-up Point'];
+$GLOBALS['TL_LANG']['MSC']['checkout_jvh_product_notavailable'] = 'Product %s is not available';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_review'] = 'Order review';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'] = 'Shipping';
 $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping_message'] = 'I want to shipping my order to';
