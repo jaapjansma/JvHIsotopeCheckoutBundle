@@ -89,11 +89,13 @@ class CombineWithOrder extends CheckoutStep implements IsotopeCheckoutStep {
                 if ($shippingMethod) {
                     $packagingSlipModel = IsotopePackagingSlipModel::findOneBy('id', substr($objWidget->value, 15));
                     Isotope::getCart()->combined_packaging_slip_id = '';
+                    Isotope::getCart()->disableFreeProducts = false;
                     Isotope::getCart()->setShippingAddress(null);
                     Isotope::getCart()->setShippingMethod(null);
                     if ($packagingSlipModel) {
                         $this->blnError = false;
                         Isotope::getCart()->combined_packaging_slip_id = $packagingSlipModel->document_number;
+                        Isotope::getCart()->disableFreeProducts = true;
                         Isotope::getCart()->setShippingMethod($shippingMethod);
                         $objAddress = Address::createForProductCollection(Isotope::getCart(), Isotope::getConfig()->getShippingFields(), false, false);
                         foreach(Isotope::getConfig()->getShippingFields() as $field) {
