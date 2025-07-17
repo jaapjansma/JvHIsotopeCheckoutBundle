@@ -21,6 +21,9 @@ use JvH\IsotopeCheckoutBundle\EventListener\ProductionCollectionListener;
 $GLOBALS['ISO_HOOKS']['updateDraftOrder'][] = [ProductionCollectionListener::class, 'updateDraftOrder'];
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [ProductionCollectionListener::class, 'findSurchargesForCollection'];
 $GLOBALS['ISO_HOOKS']['addCollectionToTemplate'][] = [ProductionCollectionListener::class, 'addCollectionToTemplate'];
+$GLOBALS['ISO_HOOKS']['addCollectionToTemplate'][] = [\JvH\IsotopeCheckoutBundle\EventListener\ContinueShoppingLink::class, 'addCollectionToTemplate'];
+$GLOBALS['TL_HOOKS']['getFrontendModule'][] = [\JvH\IsotopeCheckoutBundle\EventListener\ContinueShoppingLink::class, 'getFrontendModule'];
+$GLOBALS['TL_HOOKS']['getContentElement'][] =  [\JvH\IsotopeCheckoutBundle\EventListener\ContinueShoppingLink::class, 'getContentElement'];
 
 unset($GLOBALS['ISO_CHECKOUTSTEP']['address']);
 unset($GLOBALS['ISO_CHECKOUTSTEP']['shipping']);

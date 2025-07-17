@@ -18,10 +18,7 @@
 
 namespace JvH\IsotopeCheckoutBundle\EventListener;
 
-use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\System;
 use Contao\Template;
-use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Message;
 use Isotope\Model\Product;
@@ -32,8 +29,6 @@ use Isotope\Model\ProductCollectionSurcharge;
 class ProductionCollectionListener {
 
   public function addCollectionToTemplate(Template $objTemplate, array $arrItems, IsotopeProductCollection $objCollection, array $arrConfig) {
-    $referer = System::getReferer();
-    $objTemplate->jvhContinueShoppingUrl = $referer;
     foreach ($objCollection->getItems() as $objItem) {
       $product = $objItem->getProduct();
       if ($product instanceof Product) {
