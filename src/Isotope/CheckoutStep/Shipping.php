@@ -122,6 +122,7 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
                         'headline' => $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'],
                         'info' => $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['shop'][0],
                         'edit' => $this->isSkippable() ? '' : Checkout::generateUrlForStep('jvh_shipping'),
+                        'note' => '',
                     ],
                 ];
                 break;
@@ -131,6 +132,7 @@ class Shipping extends CheckoutStep implements IsotopeCheckoutStep {
                         'headline' => $GLOBALS['TL_LANG']['MSC']['checkout_jvh_shipping'],
                         'info' => $GLOBALS['TL_LANG']['MSC']['jvh_shipping_options']['combine'][0],
                         'edit' => $this->isSkippable() ? '' : Checkout::generateUrlForStep('jvh_shipping'),
+                        'note' => '',
                     ],
                 ];
                 break;

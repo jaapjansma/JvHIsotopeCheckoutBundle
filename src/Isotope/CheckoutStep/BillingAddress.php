@@ -69,6 +69,7 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
         'info' => $objBillingAddress->generate(Isotope::getConfig()
           ->getBillingFieldsConfig()),
         'edit' => $canEdit ? Checkout::generateUrlForStep('billing_address') : '',
+        'note' => '',
       ],
     ];
   }

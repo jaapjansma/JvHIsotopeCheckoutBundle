@@ -80,6 +80,7 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
             'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
             'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
             'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('shipping_address'),
+            'note' => '',
         ));
     }
 
