@@ -24,6 +24,7 @@ $GLOBALS['ISO_HOOKS']['addCollectionToTemplate'][] = [ProductionCollectionListen
 $GLOBALS['ISO_HOOKS']['addCollectionToTemplate'][] = [\JvH\IsotopeCheckoutBundle\EventListener\ContinueShoppingLink::class, 'addCollectionToTemplate'];
 $GLOBALS['TL_HOOKS']['getFrontendModule'][] = [\JvH\IsotopeCheckoutBundle\EventListener\ContinueShoppingLink::class, 'getFrontendModule'];
 $GLOBALS['TL_HOOKS']['getContentElement'][] =  [\JvH\IsotopeCheckoutBundle\EventListener\ContinueShoppingLink::class, 'getContentElement'];
+$GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [\JvH\IsotopeCheckoutBundle\Backend\Callback\OrderDetails::class, 'getAttributesFromDca'];
 
 unset($GLOBALS['ISO_CHECKOUTSTEP']['address']);
 unset($GLOBALS['ISO_CHECKOUTSTEP']['shipping']);
