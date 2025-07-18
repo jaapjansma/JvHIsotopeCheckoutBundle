@@ -74,6 +74,28 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
     ];
   }
 
+  /**
+   * Generate address options and return it as HTML string
+   *
+   * @param bool $blnValidate
+   *
+   * @return string
+   */
+  protected function generateOptions($blnValidate = false) {
+    if (!$blnValidate) {
+      $cart = Isotope::getCart();
+      $billingAddress = $cart->getBillingAddress();
+      if (empty($billingAddress->id)) {
+        $addresses = $this->getAddresses();
+        if (count($addresses) > 0) {
+          $cart->setBillingAddress(reset($addresses));
+          $cart->billing_address_id = $billingAddress->id;
+        }
+      }
+    }
+    return parent::generateOptions($blnValidate);
+  }
+
   protected function setAddress(AddressModel $objAddress): void {
     $arrShopCountries = Isotope::getConfig()->getBillingCountries();
     if (!\in_array($objAddress->country, $arrShopCountries, TRUE)) {

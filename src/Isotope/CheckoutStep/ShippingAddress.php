@@ -92,8 +92,9 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
     protected function getAddresses()
     {
         $adresses = parent::getAddresses();
-        return array_filter($adresses, function($address) {
-            return empty($address->dhl_servicepoint_id);
+        $billingAddress = Isotope::getCart()->getBillingAddress();
+        return array_filter($adresses, function($address) use ($billingAddress) {
+            return empty($address->dhl_servicepoint_id) && ($address->id != $billingAddress->id);
         });
     }
 
