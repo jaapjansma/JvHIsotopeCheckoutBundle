@@ -25,15 +25,18 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge;
+use Spatie\SchemaOrg\Car;
 
 class ProductionCollectionListener {
 
   public function addCollectionToTemplate(Template $objTemplate, array $arrItems, IsotopeProductCollection $objCollection, array $arrConfig) {
-    foreach ($objCollection->getItems() as $objItem) {
-      $product = $objItem->getProduct();
-      if ($product instanceof Product) {
-        if (!$product->isAvailableInFrontend()) {
-          Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['checkout_jvh_product_notavailable'], $product->getName()));
+    if ($objCollection instanceof Cart) {
+      foreach ($objCollection->getItems() as $objItem) {
+        $product = $objItem->getProduct();
+        if ($product instanceof Product) {
+          if (!$product->isAvailableInFrontend()) {
+            Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['checkout_jvh_product_notavailable'], $product->getName()));
+          }
         }
       }
     }
