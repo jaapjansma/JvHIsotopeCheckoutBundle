@@ -25,7 +25,6 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge;
-use Spatie\SchemaOrg\Car;
 
 class ProductionCollectionListener {
 
