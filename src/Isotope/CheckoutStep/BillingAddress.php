@@ -2,8 +2,10 @@
 
 namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
+use Contao\FrontendUser;
 use Contao\System;
 use Isotope\Isotope;
+use Isotope\Model\Address;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 
@@ -109,6 +111,27 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
       }
     }
     parent::setAddress($objAddress);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  protected function getAddress()
+  {
+    $address = Isotope::getCart()->getBillingAddress();
+
+    if ((null === $address || empty($address->id)) && FE_USER_LOGGED_IN === true) {
+      $allAddresses = $this->getAddresses();
+      if (count($allAddresses) > 0) {
+        $address = $allAddresses[0];
+      }
+    }
+
+    if (null !== $address && Isotope::getCart()->billing_address_id != $address->id) {
+      Isotope::getCart()->setBillingAddress($address);
+    }
+
+    return $address;
   }
 
 }
