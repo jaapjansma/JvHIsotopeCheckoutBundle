@@ -18,6 +18,7 @@
 
 use JvH\IsotopeCheckoutBundle\EventListener\ProductionCollectionListener;
 
+$GLOBALS['ISO_HOOKS']['preCheckout'][] = [ProductionCollectionListener::class, 'preCheckout'];
 $GLOBALS['ISO_HOOKS']['updateAddressData'][] = [\JvH\IsotopeCheckoutBundle\EventListener\AddressBookListener::class, 'updateAddressData'];
 $GLOBALS['ISO_HOOKS']['updateDraftOrder'][] = [ProductionCollectionListener::class, 'updateDraftOrder'];
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [ProductionCollectionListener::class, 'findSurchargesForCollection'];

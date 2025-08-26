@@ -2,10 +2,10 @@
 
 namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
-use Contao\FrontendUser;
+use Contao\Database;
 use Contao\System;
+use Haste\Generator\RowClass;
 use Isotope\Isotope;
-use Isotope\Model\Address;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 
@@ -133,5 +133,34 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
 
     return $address;
   }
+
+  protected function getWidgets() {
+    $return = parent::getWidgets();
+    unset($return['isDefaultShipping']);
+    $arrOptions = $this->getAddressOptions();
+    if (!count($arrOptions)) {
+      unset($return['isDefaultBilling']);
+    }
+    return $return;
+  }
+
+  /**
+   * Validate input and return address data
+   *
+   * @param bool $blnValidate
+   *
+   * @return array
+   */
+  protected function validateFields($blnValidate)
+  {
+    $arrAddress = parent::validateFields($blnValidate);
+    $arrOptions = $this->getAddressOptions();
+    if (!count($arrOptions)) {
+      $arrAddress['isDefaultBilling'] = TRUE;
+      $arrAddress['isDefaultShipping'] = TRUE;
+    }
+    return $arrAddress;
+  }
+
 
 }

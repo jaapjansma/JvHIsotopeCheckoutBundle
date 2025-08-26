@@ -21,10 +21,12 @@ namespace JvH\IsotopeCheckoutBundle\EventListener;
 use Contao\Template;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Message;
+use Isotope\Model\Address;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Module\Checkout;
 
 class ProductionCollectionListener {
 
@@ -72,6 +74,77 @@ class ProductionCollectionListener {
       return $arrSurcharges;
     }
     return array();
+  }
+
+  public function preCheckout(ProductCollection $order, Checkout $checkoutModule) {
+    // Deze hook zorgt ervoor dat niet alle shipping addressen aan de tl member worden toegevoegd.
+    // Dit dient alleen te gebeuren als het een nieuw shipping address is (of te wel geen ophalen in winkel, geen pickup of niet gecombineerd met bestaande bestelling.
+    // Store address in address book
+    if ($order->iso_addToAddressbook && $order->member > 0 && !$order->isLocked()) {
+      $order->iso_addToAddressbook = false;
+      $canSkip = deserialize($order->iso_checkout_skippable, true);
+      $objBillingAddress  = $order->getBillingAddress();
+      $objShippingAddress = $order->getShippingAddress();
+      if (null !== $objBillingAddress
+        && $objBillingAddress->ptable != \MemberModel::getTable()
+        && !\in_array('billing_address', $canSkip, true)
+      ) {
+        $objAddress         = clone $objBillingAddress;
+        $objAddress->pid    = $order->member;
+        $objAddress->tstamp = time();
+        $objAddress->ptable = \MemberModel::getTable();
+        $objAddress->store_id = $order->store_id;
+        $objAddress->save();
+
+        $this->updateDefaultAddress($objAddress);
+      }
+
+      if (null !== $objBillingAddress
+        && null !== $objShippingAddress
+        && $objBillingAddress->id != $objShippingAddress->id
+        && $objShippingAddress->ptable != \MemberModel::getTable()
+        && !\in_array('shipping_address', $canSkip, true)
+        && empty($objShippingAddress->sendcloud_servicepoint_id)
+        && empty($objShippingAddress->dhl_servicepoint_id)
+        && empty($order->combined_order_id)
+        && ($order->getShippingMethod() === NULL || $order->getShippingMethod()->type != 'pickup_shop')
+      ) {
+        $objAddress         = clone $objShippingAddress;
+        $objAddress->pid    = $order->member;
+        $objAddress->tstamp = time();
+        $objAddress->ptable = \MemberModel::getTable();
+        $objAddress->store_id = $order->store_id;
+        $objAddress->save();
+
+        $this->updateDefaultAddress($objAddress);
+      }
+    }
+  }
+
+  /**
+   * Mark existing addresses as not default if the new address is default
+   *
+   * @param Address $objAddress
+   */
+  protected function updateDefaultAddress(Address $objAddress)
+  {
+    $arrSet = array();
+
+    if ($objAddress->isDefaultBilling) {
+      $arrSet['isDefaultBilling'] = '';
+    }
+
+    if ($objAddress->isDefaultShipping) {
+      $arrSet['isDefaultShipping'] = '';
+    }
+
+    if (\count($arrSet) > 0) {
+      \Database::getInstance()
+        ->prepare('UPDATE tl_iso_address %s WHERE pid=? AND ptable=? AND id!=?')
+        ->set($arrSet)
+        ->execute($objAddress->pid, \MemberModel::getTable(), $objAddress->id)
+      ;
+    }
   }
 
 }

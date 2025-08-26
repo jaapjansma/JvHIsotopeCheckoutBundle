@@ -19,6 +19,8 @@
 namespace JvH\IsotopeCheckoutBundle\Isotope\CheckoutStep;
 
 use AppBundle\Model\Shipping\Pickup;
+use Contao\Database;
+use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Isotope\Isotope;
@@ -132,6 +134,58 @@ class ShippingAddress extends \Isotope\CheckoutStep\ShippingAddress {
       }
     }
     parent::setAddress($objAddress);
+  }
+
+  protected function getWidgets() {
+    $return = parent::getWidgets();
+    unset($return['isDefaultBilling']);
+    $arrOptions = $this->getAddressOptions();
+    if (!count($arrOptions)) {
+      unset($return['isDefaultShipping']);
+    }
+    return $return;
+  }
+
+  /**
+   * Validate input and return address data
+   *
+   * @param bool $blnValidate
+   *
+   * @return array
+   */
+  protected function validateFields($blnValidate)
+  {
+    $arrAddress = parent::validateFields($blnValidate);
+    $arrOptions = $this->getAddressOptions();
+    if (!count($arrOptions)) {
+      $arrAddress['isDefaultShipping'] = TRUE;
+    }
+    return $arrAddress;
+  }
+
+  /**
+   * Get default address for this collection and address type
+   *
+   * @return AddressModel
+   */
+  protected function getDefaultAddress()
+  {
+    $objAddress = AddressModel::createForProductCollection(
+      Isotope::getCart(),
+      Isotope::getConfig()->getShippingFields(),
+      false,
+      true
+    );
+    return $objAddress;
+  }
+
+  protected function getAddressForOption($varValue, $blnValidate) {
+    $objAddress = parent::getAddressForOption($varValue, $blnValidate);
+    if ($blnValidate && $varValue === '0' && $objAddress->isDefaultShipping) {
+      Isotope::getCart()->getBillingAddress()->isDefaultShipping = FALSE;
+      Isotope::getCart()->getBillingAddress()->save();
+    }
+    return $objAddress;
   }
 
 
