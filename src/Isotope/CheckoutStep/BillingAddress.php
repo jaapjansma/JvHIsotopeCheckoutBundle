@@ -166,5 +166,38 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
     return $arrAddress;
   }
 
+  protected function getAddressForOption($varValue, $blnValidate)
+  {
+    if ($varValue == '0') {
+      $objAddress = $this->getDefaultAddress();
+      $arrAddress = $this->validateFields($blnValidate);
+
+      if ($blnValidate) {
+        foreach ($arrAddress as $field => $value) {
+          $objAddress->$field = $value;
+        }
+
+        if (Isotope::getCart()->member) {
+          $objAddress->pid = Isotope::getCart()->member;
+          $objAddress->ptable = 'tl_member';
+        }
+
+        $objAddress->save();
+      }
+
+      return $objAddress;
+    }
+
+    $arrAddresses = $this->getAddresses();
+
+    foreach ($arrAddresses as $objAddress) {
+      if ($objAddress->id == $varValue) {
+        return $objAddress;
+      }
+    }
+
+    return null;
+  }
+
 
 }

@@ -51,6 +51,11 @@ class Ship {
         $this->loadOptions();
     }
 
+  public function isAvailable(): bool {
+    $this->loadOptions();
+    return count($this->options) > 0;
+  }
+
 
     /**
      * @param bool $blnIsSubmitted
