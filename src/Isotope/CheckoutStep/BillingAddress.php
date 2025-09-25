@@ -111,6 +111,7 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
       }
     }
     parent::setAddress($objAddress);
+    Isotope::getCart()->save();
   }
 
   /**
@@ -153,8 +154,11 @@ class BillingAddress extends \Isotope\CheckoutStep\BillingAddress {
    */
   protected function validateFields($blnValidate)
   {
+    static $arrOptions = null;
+    if ($arrOptions === null) {
+      $arrOptions = $this->getAddressOptions();
+    }
     $arrAddress = parent::validateFields($blnValidate);
-    $arrOptions = $this->getAddressOptions();
     if (!count($arrOptions)) {
       $arrAddress['isDefaultBilling'] = TRUE;
       $arrAddress['isDefaultShipping'] = TRUE;
