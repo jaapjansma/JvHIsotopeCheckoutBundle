@@ -18,6 +18,7 @@
 
 namespace JvH\IsotopeCheckoutBundle\EventListener;
 
+use Contao\MemberModel;
 use Contao\Template;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Message;
@@ -80,6 +81,27 @@ class ProductionCollectionListener {
     // Deze hook zorgt ervoor dat niet alle shipping addressen aan de tl member worden toegevoegd.
     // Dit dient alleen te gebeuren als het een nieuw shipping address is (of te wel geen ophalen in winkel, geen pickup of niet gecombineerd met bestaande bestelling.
     // Store address in address book
+    if ($order->member > 0 && !$order->isLocked()) {
+      $objBillingAddress  = $order->getBillingAddress();
+      $member = MemberModel::findByPk($order->member);
+      $doSaveMember = false;
+      if ($member && empty($member->firstname) && empty($member->lastname)) {
+        $member->firstname = $objBillingAddress->firstname;
+        $member->lastname = $objBillingAddress->lastname;
+        $doSaveMember = TRUE;
+      }
+      if ($member && empty($member->street) && empty($member->postal) && empty($member->city)) {
+        $member->street = $objBillingAddress->street_1;
+        $member->housenumber = $objBillingAddress->housenumber;
+        $member->postal = $objBillingAddress->postal;
+        $member->city = $objBillingAddress->city;
+        $member->country = $objBillingAddress->country;
+        $doSaveMember = TRUE;
+      }
+      if ($member && $doSaveMember) {
+        $member->save();
+      }
+    }
     if ($order->iso_addToAddressbook && $order->member > 0 && !$order->isLocked()) {
       $order->iso_addToAddressbook = false;
       $canSkip = deserialize($order->iso_checkout_skippable, true);
